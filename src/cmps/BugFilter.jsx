@@ -14,16 +14,13 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
             let { value, name: field, type } = target
             value = type === 'number' ? +value : value
             setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
-        }
-
-        console.log('filter fron fronted: ', filterByToEdit);
-        
+        }        
 
 
         return(
             <section className="bug-filter">
             <h3>Filter Bugs 🐞</h3>
-                        <form >
+            <form >
                 <div>
                     <label htmlFor="title">Title:</label>
                     <input type="text"
