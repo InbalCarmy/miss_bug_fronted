@@ -1,6 +1,10 @@
 
 // import { utilService } from './util.service.js'
-import axios from 'axios'
+import Axios from 'axios'
+
+const axios = Axios.create({
+    withCredentials: true,
+})
 
 const BASE_URL = 'http://localhost:3030/api/bug/'
 
@@ -29,14 +33,17 @@ function query(filterBy = {}) {
 }
 
 function getById(bugId) {
-    return axios.get(BASE_URL + bugId).then(res => res.data)
+    return axios.get(BASE_URL + bugId)
+        .then(res => res.data)
 }
 
 function remove(bugId) {
     return axios.get(BASE_URL + 'remove/' + bugId)
+        .then(res => res.data)
 }
 
 function save(bug) {
+    // const queryParams = `save?_id=${bug._id || ''}&title=${bug.title}&severity=${bug.severity}&description=${bug.description}&createdAt=${bug.createdAt}`
     return axios.get(BASE_URL + 'save', {params: bug}).then(res => res.data)
 }
 
