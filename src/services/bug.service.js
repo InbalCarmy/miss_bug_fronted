@@ -34,7 +34,16 @@ export const bugService = {
 
 async function query(filterBy = {}) {
     try {
-        const { data: cars } = await axios.get(BASE_URL, { params: filterBy })
+        // Convert labels array to comma-separated string for server
+        const params = { ...filterBy }
+        if (params.labels && Array.isArray(params.labels) && params.labels.length > 0) {
+            params.labels = params.labels.join(',')
+        } else {
+            // Remove empty labels array to avoid sending labels= in URL
+            delete params.labels
+        }
+
+        const { data: cars } = await axios.get(BASE_URL, { params })
         // console.log('✸ → cars:', cars)
         return cars
     } catch (err) {

@@ -1,6 +1,28 @@
 import { utilService } from "../services/util.service"
 import { useEffect, useState, useRef } from 'react'
 
+  const labels = [
+    "backend",
+    "API",
+    "user-data",
+    "critical",
+    "database",
+    "network",
+    "frontend",
+    "UI",
+    "event-listener",
+    "performance",
+    "memory",
+    "auth",
+    "token",
+    "config",
+    "notifications",
+    "error-handling",
+    "triage",
+    "new",
+    "pending"
+  ]
+
 
 export function BugFilter({ filterBy, onSetFilterBy }) {
     const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy})
@@ -14,7 +36,25 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
             let { value, name: field, type } = target
             value = type === 'number' ? +value : value
             setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
-        }        
+        }  
+        
+        // function handleLabelToggle(label) {
+        //     setFilterByToEdit(prevFilter => {
+        //         const labels = prevFilter.labels || []
+        //         const isLabelSelected = labels.includes(label)
+
+        //         const nwLabels = isLabelSelected
+        //             ? labels.filter(l => l !== label)
+        //             : [...labels, label]
+
+        //         return { ...prevFilter, labels: nwLabels }
+        //     })
+        // }
+
+        function handleMultiSelect({ target }) {
+    const selectedOptions = Array.from(target.selectedOptions, option => option.value)
+    setFilterByToEdit((prevFilter) => ({ ...prevFilter, labels: selectedOptions }))
+}
 
         console.log('filterBy from front:', filterBy);
         
@@ -43,6 +83,26 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
                         value={filterByToEdit.minSeverity || ''}
                         onChange={handleChange}
                     />
+                </div>
+
+                <div>
+                    <label>Labels:</label>
+                    {/* <div className="labels-checkbox">
+                        {labels.map(label =>(
+                            <label key={label} className="label-checkbox">
+                                <input type="checkbox"
+                                checked= {filterByToEdit.labels?.includes(label) || false} 
+                                onChange={() => handleLabelToggle(label)}
+                                />
+                                <span>{label}</span>
+                            </label>
+                        ))}
+                    </div> */}
+                    <select multiple name="labels" value={filterByToEdit.labels} onChange={handleMultiSelect}>
+    {labels.map(label => (
+        <option key={label} value={label}>{label}</option>
+    ))}
+</select>
                 </div>
 
             </form>
