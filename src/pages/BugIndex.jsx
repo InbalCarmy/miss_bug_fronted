@@ -37,7 +37,20 @@ export function BugIndex() {
     }
 
     function onSetFilterBy(filterBy) {
-        setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
+        setFilterBy(prevFilter => {
+            let pageIdx = undefined
+            if(prevFilter.pageIdx !== undefined) pageIdx = 0
+            return {...prevFilter, ...filterBy, pageIdx}
+        })
+    }
+
+    function onChangePageIdx(diff) {
+        setFilterBy(prevFilter => {
+            let newPageIdx = prevFilter.pageIdx ?? 0
+            newPageIdx += diff
+            if (newPageIdx < 0) return prevFilter
+            return { ...prevFilter, pageIdx: newPageIdx }
+        })
     }
 
     async function onAddBug() {
@@ -73,10 +86,16 @@ export function BugIndex() {
         }
     }
 
+    const { pageIdx, ...restOfFilter } = filterBy
+    // const isPaging = pageIdx !== undefined
+
     return (
         <section >
             <h3>Bugs App</h3>
-            <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy}/>
+            <button onClick={() => onChangePageIdx(-1)}>-</button>
+            <span>{pageIdx !== undefined ? pageIdx + 1 : ''}</span>
+            <button onClick={() => onChangePageIdx(1)}>+</button>
+            <BugFilter filterBy={restOfFilter} onSetFilterBy={onSetFilterBy}/>
             <main>
                 <button onClick={onAddBug}>Add Bug ⛐</button>
                 <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />

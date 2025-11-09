@@ -82,5 +82,5 @@ async function save(bug) {
 }
 
 function getDefaultFilter() {
-    return { txt: '', minSeverity: 0 , labels: []}
+    return { txt: '', minSeverity: 0 , labels: [], pageIdx: 0}
 }
