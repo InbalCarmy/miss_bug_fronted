@@ -16,6 +16,9 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
             setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
         }        
 
+        console.log('filterBy from front:', filterBy);
+        
+
 
         return(
             <section className="bug-filter">
@@ -32,12 +35,12 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
                     />
                 </div>
                 <div>
-                    <label htmlFor="severity">Min severity:</label>
+                    <label htmlFor="minSeverity">Min severity:</label>
                     <input type="number"
-                        id="severity"
-                        name="severity"
+                        id="minSverity"
+                        name="minSeverity"
                         placeholder="By min Severity"
-                        value={filterByToEdit.severity || ''}
+                        value={filterByToEdit.minSeverity || ''}
                         onChange={handleChange}
                     />
                 </div>
