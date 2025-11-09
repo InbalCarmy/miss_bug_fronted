@@ -37,16 +37,30 @@ function getById(bugId) {
         .then(res => res.data)
 }
 
-function remove(bugId) {
-    return axios.get(BASE_URL + 'remove/' + bugId)
-        .then(res => res.data)
+async function remove(bugId) {
+    const url = BASE_URL + bugId
+    try {
+        const { data } = await axios.delete(url)
+        return data
+    } catch (err) {
+        console.error('Cannot remove bug', err)
+        throw err
+    }
 }
 
-function save(bug) {
-    // const queryParams = `save?_id=${bug._id || ''}&title=${bug.title}&severity=${bug.severity}&description=${bug.description}&createdAt=${bug.createdAt}`
-    return axios.get(BASE_URL + 'save', {params: bug}).then(res => res.data)
+async function save(bug) {
+    const url = BASE_URL + (bug._id || '')
+    const method = bug._id ? 'put' : 'post'
+
+    try{
+        const { data: savedBug } = await axios[method](url, bug)
+        return savedBug
+    } catch (err) {
+        console.error('Cannot save bug', err)
+        throw err
+    }
 }
 
 function getDefaultFilter() {
-    return { txt: '', severity: 0 }
+    return { txt: '', severity: 0 , labels: []}
 }
