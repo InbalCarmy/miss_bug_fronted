@@ -17,21 +17,6 @@ export const bugService = {
 }
 
 
-// function query(filterBy = {}) {
-//     filterBy = {...filterBy}
-//     return axios.get(BASE_URL)
-//         .then(res => res.data)
-//         .then (bugs => {
-//             if(!filterBy.txt) filterBy.txt = ''
-//             if(!filterBy.severity) filterBy.severity = 0
-//             const regExp = new RegExp(filterBy.txt, 'i')
-//             return bugs.filter(bug =>
-//                 regExp.test(bug.title) &&
-//                 bug.severity >= filterBy.severity
-//             )
-//         })
-// }
-
 async function query(filterBy = {}) {
     try {
         // Convert labels array to comma-separated string for server
@@ -44,7 +29,7 @@ async function query(filterBy = {}) {
         }
 
         const { data: cars } = await axios.get(BASE_URL, { params })
-        // console.log('✸ → cars:', cars)
+        console.log('✸ → cars:', cars)
         return cars
     } catch (err) {
         console.log('err:', err)
@@ -82,5 +67,5 @@ async function save(bug) {
 }
 
 function getDefaultFilter() {
-    return { txt: '', minSeverity: 0 , labels: [], pageIdx: 0}
+    return { txt: '', minSeverity: 0 , labels: [], pageIdx: 0, sortBy: '', sortDir: 1 }
 }

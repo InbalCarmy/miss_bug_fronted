@@ -35,6 +35,8 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
         function handleChange({ target }) {
             let { value, name: field, type } = target
             value = type === 'number' ? +value : value
+            // Convert sortDir to number
+            if (field === 'sortDir') value = +value
             setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
         }  
         
@@ -56,7 +58,6 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
     setFilterByToEdit((prevFilter) => ({ ...prevFilter, labels: selectedOptions }))
 }
 
-        console.log('filterBy from front:', filterBy);
         
 
 
@@ -87,24 +88,40 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
 
                 <div>
                     <label>Labels:</label>
-                    {/* <div className="labels-checkbox">
-                        {labels.map(label =>(
-                            <label key={label} className="label-checkbox">
-                                <input type="checkbox"
-                                checked= {filterByToEdit.labels?.includes(label) || false} 
-                                onChange={() => handleLabelToggle(label)}
-                                />
-                                <span>{label}</span>
-                            </label>
-                        ))}
-                    </div> */}
                     <select multiple name="labels" value={filterByToEdit.labels} onChange={handleMultiSelect}>
-    {labels.map(label => (
-        <option key={label} value={label}>{label}</option>
-    ))}
-</select>
+                        {labels.map(label => (
+                        <option key={label} value={label}>{label}</option>
+                            ))}
+                    </select>
                 </div>
 
+                <div>
+                    <label htmlFor="sortBy">Sort By:</label>
+                    <select
+                        id="sortBy"
+                        name="sortBy"
+                        value={filterByToEdit.sortBy || ''}
+                        onChange={handleChange}
+                    >
+                        <option value="">None</option>
+                        <option value="title">Title</option>
+                        <option value="severity">Severity</option>
+                        <option value="createdAt">Created At</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label htmlFor="sortDir">Sort Direction:</label>
+                    <select
+                        id="sortDir"
+                        name="sortDir"
+                        value={filterByToEdit.sortDir || 1}
+                        onChange={handleChange}
+                    >
+                        <option value="1">Ascending</option>
+                        <option value="-1">Descending</option>
+                    </select>
+                </div>
             </form>
 
             </section>
