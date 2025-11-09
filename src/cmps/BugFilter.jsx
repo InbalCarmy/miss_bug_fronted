@@ -54,9 +54,9 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
         // }
 
         function handleMultiSelect({ target }) {
-    const selectedOptions = Array.from(target.selectedOptions, option => option.value)
-    setFilterByToEdit((prevFilter) => ({ ...prevFilter, labels: selectedOptions }))
-}
+            const selectedOptions = Array.from(target.selectedOptions, option => option.value)
+            setFilterByToEdit((prevFilter) => ({ ...prevFilter, labels: selectedOptions }))
+        }
 
         
 

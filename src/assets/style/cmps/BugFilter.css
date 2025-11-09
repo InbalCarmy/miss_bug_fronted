@@ -23,7 +23,7 @@
             flex-direction: column;
             input {
                 font-family: 'Edu VIC WA NT Beginner', cursive;
-                width: 80%;
+                width: 100%;
                 max-width: 200px;
                 min-width: 100px;
                 padding: 0.5em;
@@ -35,7 +35,20 @@
                 outline: none;
                 box-shadow: none;
             }
-
+            select {
+                font-family: 'Edu VIC WA NT Beginner', cursive;
+                width: 100%;
+                max-width: 200px;
+                min-width: 100px;
+                padding: 0.5em;
+                border: none;
+                border-radius: 0.5em;
+                margin-top: 5px;
+            }
+            select:focus{
+                outline: none;
+                box-shadow: none;               
+            }
         }
     }
 }
