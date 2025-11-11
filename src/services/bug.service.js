@@ -28,9 +28,9 @@ async function query(filterBy = {}) {
             delete params.labels
         }
 
-        const { data: cars } = await axios.get(BASE_URL, { params })
-        console.log('✸ → cars:', cars)
-        return cars
+        const { data: bugs } = await axios.get(BASE_URL, { params })
+        console.log('✸ → bugs:', bugs)
+        return bugs
     } catch (err) {
         console.log('err:', err)
         throw err

@@ -42,6 +42,8 @@ a {
     text-decoration: none;
     color: unset;
     cursor: pointer;
+    font-family: 'Edu VIC WA NT Beginner', cursive;
+    font-size: 1rem;
 }
 
 
