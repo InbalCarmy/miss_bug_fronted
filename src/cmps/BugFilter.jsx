@@ -35,31 +35,14 @@ export function BugFilter({ filterBy, onSetFilterBy }) {
         function handleChange({ target }) {
             let { value, name: field, type } = target
             value = type === 'number' ? +value : value
-            // Convert sortDir to number
             if (field === 'sortDir') value = +value
             setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
         }  
-        
-        // function handleLabelToggle(label) {
-        //     setFilterByToEdit(prevFilter => {
-        //         const labels = prevFilter.labels || []
-        //         const isLabelSelected = labels.includes(label)
-
-        //         const nwLabels = isLabelSelected
-        //             ? labels.filter(l => l !== label)
-        //             : [...labels, label]
-
-        //         return { ...prevFilter, labels: nwLabels }
-        //     })
-        // }
 
         function handleMultiSelect({ target }) {
             const selectedOptions = Array.from(target.selectedOptions, option => option.value)
             setFilterByToEdit((prevFilter) => ({ ...prevFilter, labels: selectedOptions }))
         }
-
-        
-
 
         return(
             <section className="bug-filter">
