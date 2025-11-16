@@ -13,7 +13,7 @@ export function UserIndex() {
 
     async function loadUsers() {
         try{
-            const users = await userService.query()
+            const users = await userService.getUsers()
             setUsers(users)  
         } catch(err){
             console.log('Error from loadUsers ->', err)
@@ -39,7 +39,7 @@ export function UserIndex() {
         const password = prompt('New password?')
         const userToSave = { ...user, username, score, password }
         try {
-            const savedUser = await userService.save(userToSave)
+            const savedUser = await userService.update(userToSave)
             console.log('Updated User:', savedUser)
             setUsers(prevUsers => prevUsers.map((currUser) =>
                 currUser._id === savedUser._id ? savedUser : currUser
@@ -52,28 +52,28 @@ export function UserIndex() {
     }
 
 
-    async function onAddUser() {
-        const user = {
-            fullname: prompt('Full name?'),
-            username: prompt('User name?'),
-            password: prompt('Password?'),
-            score: +prompt('Score?'),
-        }
-        try {
-            const savedUser = await userService.save(user)
-            console.log('Added User', savedUser)
-            setUsers(prevUsers => [...prevUsers, savedUser])
-            showSuccessMsg('User added')
-        } catch (err) {
-            console.log('Error from onAddUser ->', err)
-            showErrorMsg('Cannot add user')
-        }
-    }
+    // async function onAddUser() {
+    //     const user = {
+    //         fullname: prompt('Full name?'),
+    //         username: prompt('User name?'),
+    //         password: prompt('Password?'),
+    //         score: +prompt('Score?'),
+    //     }
+    //     try {
+    //         const savedUser = await userService.save(user)
+    //         console.log('Added User', savedUser)
+    //         setUsers(prevUsers => [...prevUsers, savedUser])
+    //         showSuccessMsg('User added')
+    //     } catch (err) {
+    //         console.log('Error from onAddUser ->', err)
+    //         showErrorMsg('Cannot add user')
+    //     }
+    // }
 
     return (
         <section>
             <h2>Users</h2>
-            <button onClick={onAddUser}>Add User</button>
+            {/* <button onClick={onAddUser}>Add User</button> */}
             <UserList users={users} onRemoveUser={onRemoveUser} onEditUser={onEditUser}/>
 
         </section>
