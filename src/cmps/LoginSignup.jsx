@@ -112,7 +112,7 @@ export function LoginSignup({ onSignup, onLogin }) {
                         required
                     />
                     {/* <ImgUploader onUploaded={onUploaded} /> */}
-                    <button >Signup!</button>
+                    <button>Signup!</button>
                 </form>}
             </div>
         </div>

@@ -1,0 +1,48 @@
+
+
+.login-form > select {
+    padding: 7px;
+    border-radius: 0.7rem;
+    font-family: 'Edu VIC WA NT Beginner', cursive;
+    font-size: 1rem;
+}
+
+.login-form > button {
+    border-radius: 0.7rem;
+}
+
+.login-form > form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signup-form > button {
+    border-radius: 0.7rem;
+}
+
+.btn-link{
+    border-radius: 0.7rem;
+    margin-bottom: 0;
+}
+
+.signup-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.signup-form > input {
+    padding: 7px;
+    border-radius: 0.7rem;
+    font-family: 'Edu VIC WA NT Beginner', cursive;
+    font-size: 1rem;
+    border: 1px solid #ccc;  /* Customize the border color */
+    outline: none;  /* Removes the blue outline on focus */
+}
+
+.signup-form > input:focus {
+    border-color: var(--clr1);  /* Change border color when focused */
+}
