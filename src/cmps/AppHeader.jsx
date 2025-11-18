@@ -16,7 +16,6 @@ export function AppHeader() {
     }, [])
 
     async function onLogin(credentials) {
-        console.log(credentials)
         try {
             const user = await userService.login(credentials)
             setLoggedinUser(user)
@@ -28,7 +27,6 @@ export function AppHeader() {
     }
 
     async function onSignup(credentials) {
-        console.log(credentials)
         try {
             const user = await userService.signup(credentials)
             setLoggedinUser(user)
