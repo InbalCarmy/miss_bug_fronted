@@ -3,11 +3,14 @@ import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { BugList } from '../cmps/BugList.jsx'
 import { useState, useEffect } from 'react'
 import { BugFilter } from '../cmps/BugFilter.jsx'
+import { userService } from '../services/user.service.js'
 
 
 export function BugIndex() {
     const [bugs, setBugs] = useState([])
     const [filterBy, setFilterBy] = useState(bugService.getDefaultFilter())
+    const loggedinUser= userService.getLoggedinUser()
+    
 
     useEffect(() => {
         loadBugs()
@@ -96,7 +99,7 @@ export function BugIndex() {
             <button onClick={() => onChangePageIdx(1)}>+</button>
             <BugFilter filterBy={restOfFilter} onSetFilterBy={onSetFilterBy}/>
             <main>
-                <button onClick={onAddBug}>Add Bug ⛐</button>
+               {loggedinUser && <button onClick={onAddBug}>Add Bug ⛐</button>}
                 <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
             </main>
         </section>
