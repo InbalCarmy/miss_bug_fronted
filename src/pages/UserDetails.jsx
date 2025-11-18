@@ -1,17 +1,61 @@
 
 import { useParams } from 'react-router'
 import { useState, useEffect } from 'react'
-import { showErrorMsg } from '../services/event-bus.service.js'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { userService } from '../services/user.service.js'
 import { Link } from 'react-router-dom'
+import { bugService } from '../services/bug.service.js'
+import { BugList } from '../cmps/BugList.jsx'
 
 export function UserDetails() {
+    const [bugs, setBugs] = useState([])
     const [user, setUser] = useState(null)
     const { userId } = useParams()
+    // const loggedinUser= userService.getLoggedinUser()
 
     useEffect(() => {
         loadUser()
+        loadBugs()
     }, [])
+
+    async function loadBugs() {
+        try{
+            const bugs = await bugService.query({createdBy: userId})
+            setBugs(bugs)
+            console.log('User Bugs:', bugs)  
+        }catch(err){
+            console.log('Error from loadBugs ->', err)
+            showErrorMsg('Cannot load bugs for user')
+        }
+    }
+
+    async function onEditBug(bug) {
+        const severity = +prompt('New severity?')
+        const bugToSave = { ...bug, severity }
+        try {
+            const savedBug = await bugService.save(bugToSave)
+            console.log('Updated Bug:', savedBug)
+            setBugs(prevBugs => prevBugs.map((currBug) =>
+                currBug._id === savedBug._id ? savedBug : currBug
+            ))
+            showSuccessMsg('Bug updated')
+        } catch (err) {
+            console.log('Error from onEditBug ->', err)
+            showErrorMsg('Cannot update bug')
+        }
+    }
+
+    async function onRemoveBug(bugId) {
+        try {
+            await bugService.remove(bugId)
+            console.log('Deleted Succesfully!')
+            setBugs(prevBugs => prevBugs.filter((bug) => bug._id !== bugId))
+            showSuccessMsg('Bug removed')
+        } catch (err) {
+            console.log('Error from onRemoveBug ->', err)
+            showErrorMsg('Cannot remove bug')
+        }
+    }
 
     async function loadUser() {
         try {
@@ -30,6 +74,7 @@ export function UserDetails() {
                 <h3>{user.fullname}</h3>
                 <h4>Username: <span>{user.username}</span></h4>
                 <h4>Score: <span>{user.score}</span></h4> 
+                <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug}/>
             </div>
             <Link to="/user">Back to users</Link>
 
