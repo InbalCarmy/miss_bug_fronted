@@ -6,7 +6,7 @@ const axios = Axios.create({
     withCredentials: true,
 })
 
-const BASE_URL = import.meta.env.PROD
+const BASE_URL = (process.env.NODE_ENV !== 'development')
                 ? '/api/bug/'
                 : 'http://localhost:3030/api/bug/';
 

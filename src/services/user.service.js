@@ -11,7 +11,7 @@ const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
 
 // const BASE_URL = 'http://localhost:3030/api/user/'
 
-const BASE_URL = import.meta.env.PROD ?
+const BASE_URL = (process.env.NODE_ENV !== 'development') ?
     '/api/' :
     '//localhost:3030/api/'
 
