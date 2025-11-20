@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { UserMsg } from './UserMsg'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { userService } from "../services/user.service.js"
+import { userService } from "../services/user/user.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
 import { LoginSignup } from "./LoginSignup.jsx"
 

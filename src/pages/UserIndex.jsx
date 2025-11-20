@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { UserList } from '../cmps/UserList.jsx'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
-import { userService } from '../services/user.service.js'
+import { userService } from '../services/user/user.service.js'
 
 
 export function UserIndex() {

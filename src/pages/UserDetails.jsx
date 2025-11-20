@@ -2,9 +2,9 @@
 import { useParams } from 'react-router'
 import { useState, useEffect } from 'react'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
-import { userService } from '../services/user.service.js'
+import { userService } from '../services/user/user.service.js'
 import { Link } from 'react-router-dom'
-import { bugService } from '../services/bug.service.js'
+import { bugService } from '../services/bug/bug.service.js'
 import { BugList } from '../cmps/BugList.jsx'
 
 export function UserDetails() {

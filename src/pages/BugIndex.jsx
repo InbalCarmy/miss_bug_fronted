@@ -1,9 +1,9 @@
-import { bugService } from '../services/bug.service.js'
+import { bugService } from '../services/bug/bug.service.js'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 import { BugList } from '../cmps/BugList.jsx'
 import { useState, useEffect } from 'react'
 import { BugFilter } from '../cmps/BugFilter.jsx'
-import { userService } from '../services/user.service.js'
+import { userService } from '../services/user/user.service.js'
 
 
 export function BugIndex() {

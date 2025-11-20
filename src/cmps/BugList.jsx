@@ -1,7 +1,7 @@
 
 import { Link } from 'react-router-dom'
 import { BugPreview } from './BugPreview'
-import { userService } from '../services/user.service.js'
+import { userService } from '../services/user/user.service.js'
 
 export function BugList({ bugs, onRemoveBug, onEditBug }) {
     const loggedinUser= userService.getLoggedinUser()
