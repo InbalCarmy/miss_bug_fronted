@@ -1,14 +1,16 @@
 
 import { Link } from 'react-router-dom'
 import { BugPreview } from './BugPreview'
-import { userService } from '../services/user/user.service.js'
+import { userService } from '../services/user'
 
 export function BugList({ bugs, onRemoveBug, onEditBug }) {
     const loggedinUser= userService.getLoggedinUser()
+    
 
     function userAllowed(bug) {
-        return loggedinUser?._id === bug.creator._id || loggedinUser?.isAdmin
+        return loggedinUser?._id === bug.creator?._id || loggedinUser?.isAdmin
     }
+    
     return (
         <ul className="bug-list">
             {bugs.map((bug) => (

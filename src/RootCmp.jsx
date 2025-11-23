@@ -5,14 +5,16 @@ import { Home } from './pages/Home.jsx'
 import { BugIndex } from './pages/BugIndex.jsx'
 import { BugDetails } from './pages/BugDetails.jsx'
 import { AboutUs } from './pages/AboutUs.jsx'
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { UserIndex } from './pages/UserIndex.jsx'
+import { UserMsg } from './cmps/UserMsg.jsx'
 import { UserDetails } from './pages/UserDetails.jsx'
 
 export function App() {
     return (
-        <Router>
+        <div className="main-container">
             <AppHeader />
+            <UserMsg />
             <main className='container'>
                 <Routes>
                     <Route path='/' element={<Home />} />
@@ -24,6 +26,6 @@ export function App() {
                 </Routes>
             </main>
             <AppFooter />
-        </Router>
+        </div>
     )
 }

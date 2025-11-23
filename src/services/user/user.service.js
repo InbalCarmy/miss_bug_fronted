@@ -36,8 +36,7 @@ export const userService = {
     getById,
     remove,
     update,
-    getEmptyUser
-}
+    }
 
 window.userService = userService
 
@@ -112,14 +111,14 @@ async function logout() {
     sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
 }
 
-function getEmptyUser() {
-    return {
-        username: '',
-        fullname: '',
-        password: '',
-        imgUrl: '',
-    }
-}
+// function getEmptyUser() {
+//     return {
+//         username: '',
+//         fullname: '',
+//         password: '',
+//         imgUrl: '',
+//     }
+// }
 
 function saveLocalUser(user) {
     user = { _id: user._id, fullname: user.fullname, isAdmin: user.isAdmin }
