@@ -10,7 +10,8 @@ function getDefaultFilter() {
         labels: [], 
         pageIdx: 0, 
         sortBy: '', 
-        sortDir: 1 
+        sortDir: 1 ,
+        createdBy: ''
     }
 }
 

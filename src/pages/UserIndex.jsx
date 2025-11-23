@@ -1,31 +1,34 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { UserList } from '../cmps/UserList.jsx'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
-import { userService } from '../services/user'
+import { useSelector } from 'react-redux'
+import { removeUser, updateUser, loadUsers } from '../../store/user/user.actions.js'
 
 
 export function UserIndex() {
-    const [users, setUsers] = useState([])
+    // const [users, setUsers] = useState([])
+        const users = useSelector(storeState => storeState.userModule.users)
+
+
 
     useEffect(() => {
         loadUsers()
     }, [])
 
-    async function loadUsers() {
-        try{
-            const users = await userService.getUsers()
-            setUsers(users)  
-        } catch(err){
-            console.log('Error from loadUsers ->', err)
-            showErrorMsg('Cannot load users')
-        }
-    }
+    // async function loadUsers() {
+    //     try{
+    //         const users = await userService.getUsers()
+    //         setUsers(users)  
+    //     } catch(err){
+    //         console.log('Error from loadUsers ->', err)
+    //         showErrorMsg('Cannot load users')
+    //     }
+    // }
 
     async function onRemoveUser(userId) {
         try {
-            await userService.remove(userId)
+            await removeUser(userId)
             console.log('Deleted Succesfully!')
-            setUsers(prevUsers => prevUsers.filter((user) => user._id !== userId))
             showSuccessMsg('User removed')
         } catch (err) {
             console.log('Error from onRemoveUser ->', err)
@@ -39,11 +42,8 @@ export function UserIndex() {
         const password = prompt('New password?')
         const userToSave = { ...user, username, score, password }
         try {
-            const savedUser = await userService.update(userToSave)
+            const savedUser = await updateUser(userToSave)
             console.log('Updated User:', savedUser)
-            setUsers(prevUsers => prevUsers.map((currUser) =>
-                currUser._id === savedUser._id ? savedUser : currUser
-            ))
             showSuccessMsg('User updated')
         } catch (err) {
             console.log('Error from onEditUser ->', err)

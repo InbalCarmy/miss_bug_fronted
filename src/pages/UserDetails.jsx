@@ -4,40 +4,28 @@ import { useState, useEffect } from 'react'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { userService } from '../services/user'
 import { Link } from 'react-router-dom'
-import { bugService } from '../services/bug'
 import { BugList } from '../cmps/BugList.jsx'
+import { loadBugs, updateBug, removeBug } from '../../store/bug/bug.actions.js'
+import { useSelector } from 'react-redux'
 
 export function UserDetails() {
-    const [bugs, setBugs] = useState([])
+    const bugs = useSelector(storeState => storeState.bugModule.bugs)
     const [user, setUser] = useState(null)
     const { userId } = useParams()
-    // const loggedinUser= userService.getLoggedinUser()
 
     useEffect(() => {
         loadUser()
-        loadBugs()
+        loadBugs({createdBy: userId})
     }, [])
 
-    async function loadBugs() {
-        try{
-            const bugs = await bugService.query({createdBy: userId})
-            setBugs(bugs)
-            console.log('User Bugs:', bugs)  
-        }catch(err){
-            console.log('Error from loadBugs ->', err)
-            showErrorMsg('Cannot load bugs for user')
-        }
-    }
 
     async function onEditBug(bug) {
         const severity = +prompt('New severity?')
+        if(!severity && severity !== 0) return 
         const bugToSave = { ...bug, severity }
         try {
-            const savedBug = await bugService.save(bugToSave)
+            const savedBug = await updateBug(bugToSave)
             console.log('Updated Bug:', savedBug)
-            setBugs(prevBugs => prevBugs.map((currBug) =>
-                currBug._id === savedBug._id ? savedBug : currBug
-            ))
             showSuccessMsg('Bug updated')
         } catch (err) {
             console.log('Error from onEditBug ->', err)
@@ -47,9 +35,8 @@ export function UserDetails() {
 
     async function onRemoveBug(bugId) {
         try {
-            await bugService.remove(bugId)
+            await removeBug(bugId)
             console.log('Deleted Succesfully!')
-            setBugs(prevBugs => prevBugs.filter((bug) => bug._id !== bugId))
             showSuccessMsg('Bug removed')
         } catch (err) {
             console.log('Error from onRemoveBug ->', err)

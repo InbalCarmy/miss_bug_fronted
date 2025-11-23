@@ -3,8 +3,9 @@ import { store } from '../store'
 import { ADD_BUG, REMOVE_BUG, SET_BUGS, SET_BUG, UPDATE_BUG } from './bug.reducer'
 
 export async function loadBugs(filterBy) {
+    
     try {        
-        const bugs = await bugService.query(filterBy)
+        const bugs = await bugService.query(filterBy)        
         store.dispatch(getCmdSetBugs(bugs))
     } catch (err) {
         console.log('Cannot load bugs', err)

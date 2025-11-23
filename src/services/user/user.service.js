@@ -1,144 +1,90 @@
-
-// import { utilService } from './util.service.js'
-import Axios from 'axios'
-
-const axios = Axios.create({
-    withCredentials: true,
-})
+import { httpService } from "../http.service"
 
 const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
 
-
-// const BASE_URL = 'http://localhost:3030/api/user/'
-
-const BASE_URL = (process.env.NODE_ENV !== 'development') ?
-    '/api/' :
-    '//localhost:3030/api/'
-
-const BASE_USER_URL = BASE_URL + 'user/'
-const BASE_AUTH_URL = BASE_URL + 'auth/'
-
-// export const userService = {
-//     query,
-//     getById,
-//     save,
-//     remove
-// }
-
 export const userService = {
-    login,
-    logout,
-    signup,
+	login,
+	logout,
+	signup,
+	getUsers,
+	getById,
+	remove,
+	update,
     getLoggedinUser,
-    saveLocalUser,
-    
-    getUsers,
-    getById,
-    remove,
-    update,
-    }
+}
 
 window.userService = userService
 
 
-
-// async function query() {
-//     try {
-//         const res = await axios.get(BASE_URL)
-//         return res.data
-//     } catch (err) {
-//         console.log('err:', err)
-//         throw err
-//     }
-// }
-
-// function getById(userId) {
-//     return axios.get(BASE_URL + userId)
-//         .then(res => res.data)
-// }
-
-// async function remove(userId) {
-//     const url = BASE_URL + userId
-//     try {
-//         const { data } = await axios.delete(url)
-//         return data
-//     } catch (err) {
-//         console.error('Cannot remove user', err)
-//         throw err
-//     }
-// }
-
-async function getUsers() {
-    const { data: users } = await axios.get(BASE_USER_URL)
-    return users
+function getUsers() {
+	return httpService.get(`user`)
 }
 
 async function getById(userId) {
-    const { data: user } = await axios.get(BASE_USER_URL + userId)
-    return user
+	const user = await httpService.get(`user/${userId}`)
+	return user
 }
 
-async function remove(userId) {
-    return await axios.delete(BASE_USER_URL + userId)
+function remove(userId) {
+	return httpService.delete(`user/${userId}`)
 }
 
-async function update(userToUpdate) {
-    // const user = await getById(userToUpdate.id)
-    // console.log('user', user)
+async function update(user) {
+    const savedUser = await httpService.put(`user/${user._id}`, user)
 
-    // const updatedUser = await axios.put(BASE_USER_URL + userToUpdate._id, userToUpdate)
-    const { data: updatedUser } = await axios.put(BASE_USER_URL + userToUpdate._id, userToUpdate)
-    if (getLoggedinUser()?._id === updatedUser._id) saveLocalUser(updatedUser)
-    return updatedUser
+
+	// const user = await httpService.put(`user/${_id}`, { _id, score, username })
+
+	// When admin updates other user's details, do not update loggedinUser
+    const loggedinUser = getLoggedinUser() // Might not work because its defined in the main service???
+    if (loggedinUser._id === savedUser._id) _saveLocalUser(savedUser)
+
+	return savedUser
 }
 
-async function login(credentials) {
-    const { data: user } = await axios.post(BASE_AUTH_URL + 'login', credentials)
-    // console.log('user', user);
-    if (user) {
-        return saveLocalUser(user)
-    }
+async function login(userCred) {
+	const user = await httpService.post('auth/login', userCred)
+	if (user) return _saveLocalUser(user)
 }
 
-async function signup(credentials) {
+async function signup(userCred) {
+	if (!userCred.imgUrl) userCred.imgUrl = 'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'
+	userCred.score = 10000
 
-    const { data: user } = await axios.post(BASE_AUTH_URL + 'signup', credentials)
-    return saveLocalUser(user)
+    const user = await httpService.post('auth/signup', userCred)
+	return _saveLocalUser(user)
 }
+
+
 
 async function logout() {
-    await axios.post(BASE_AUTH_URL + 'logout')
-    sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
-}
-
-// function getEmptyUser() {
-//     return {
-//         username: '',
-//         fullname: '',
-//         password: '',
-//         imgUrl: '',
-//     }
-// }
-
-function saveLocalUser(user) {
-    user = { _id: user._id, fullname: user.fullname, isAdmin: user.isAdmin }
-    sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
-    return user
+	sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
+	return await httpService.post('auth/logout')
 }
 
 function getLoggedinUser() {
     return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN_USER))
 }
 
-// async function save(user) {
-//     const url = BASE_URL + (user._id || '')
-//     const method = user._id ? 'put' : 'post'
+function _saveLocalUser(user) {
+	user = { _id: user._id, fullname: user.fullname, isAdmin: user.isAdmin }
+	sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
+	return user
+}
 
-//     try{
-//         const { data: savedUser } = await axios[method](url, user)
-//         return savedUser
-//     } catch (err) {
-//         console.error('Cannot save user', err)
-//         throw err
+// async function save(user) {
+//     var savedUser
+//     if (user._id) {
+//         savedUser = await httpService.put(`user/${user._id}`, user)
+//     } else {
+//         savedUser = await httpService.post('user', user)
 //     }
+
+//     // Update local storage if it's the logged in user
+//     const loggedinUser = getLoggedinUser()
+//     if (loggedinUser && loggedinUser._id === savedUser._id) {
+//         _saveLocalUser(savedUser)
+//     }
+
+//     return savedUser
 // }
